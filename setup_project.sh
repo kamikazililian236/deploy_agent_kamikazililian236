@@ -28,30 +28,12 @@ if [ -d $project_dir ];then
    echo "Directory already exists"
 
 else
+    mkdir -p "$project_dir"
     mkdir -p "$project_dir/Helpers"
     mkdir -p "$project_dir/reports"
 
-cat > attendance_tracker_$project_dir/Helpers/config.json << EOF
-
-{
-    "thresholds": {
-        "warning": 75,
-        "failure": 50
-    },
-    "run_mode": "live",
-    "total_sessions": 15
-}
-EOF
-
-cat > attendance_tracker_$project_dir/Helpers/assets.csv << 'EOF'
-Email,Names,Attendance Count,Absence Count
-alice@example.com,Alice Johnson,14,1
-bob@example.com,Bob Smith,7,8
-charlie@example.com,Charlie Davis,4,11
-diana@example.com,Diana Prince,15,0
-EOF
-
-cat > attendance_tracker_$project_dir/Helpers/attendance_checker.py << 'EOF'
+# creating attendance_checker.py file
+cat > "$project_dir/attendance_checker.py" << 'EOF'
 import csv
 import json
 import os
@@ -79,7 +61,7 @@ def run_attendance_check():
             email = row['Email']
             attended = int(row['Attendance Count'])
             
-            # Simple Math: (Attended / Total) * 100
+            # Easy Math: (Attended / Total) * 100
             attendance_pct = (attended / total_sessions) * 100
             
             message = ""
@@ -96,17 +78,40 @@ def run_attendance_check():
                     print(f"[DRY RUN] Email to {email}: {message}")
 
 if __name__ == "__main__":
-
     run_attendance_check()
 EOF
 
-cat > attendance_tracker_$project_dir/Helpers/reportes.log << 'EOF'
-	--- Attendance Report Run: 2026-02-06 18:10:01.468726 ---
-[2026-02-06 18:10:01.469363] ALERT SENT TO bob@example.com: URGENT: Bob Smith, your attendance is 46.7%. You will fail this class.
-[2026-02-06 18:10:01.469424] ALERT SENT TO charlie@example.com: URGENT: Charlie Davis, your attendance is 26.7%. You will fail this class.
-
+#The CONFIG.json file
+cat > "$project_dir/Helpers/config.json" << 'EOF'
+{
+    "thresholds": {
+        "warning": 75,
+        "failure": 50
+    },
+    "run_mode": "live",
+    "total_sessions": 15
+}
 EOF
 
+#The assets.csv file
+cat > "$project_dir/Helpers/assets.csv" << 'EOF'
+Names,Email,Attendance Count
+Alice Johnson,alice@example.com,14
+Bob Smith,bob@example.com,7
+Charlie Davis,charlie@example.com,4
+Diana Ross,diana@example.com,12
+Edward King,edward@example.com,10
+EOF
+
+# The reports.log file
+cat > "$project_dir/reports/reports.log" << 'EOF'
+--- Attendance Report Run: 2026-02-06 18:10:01.468726 ---
+[2026-02-06 18:10:01.469363] ALERT SENT TO bob@example.com: URGENT: Bob Smith, your
+attendance is 46.7%. You will fail this class.
+[2026-02-06 18:10:01.469424] ALERT SENT TO charlie@example.com: URGENT: Charlie
+Davis, your attendance is 26.7%. You will fail this class
+EOF
+fi
 
 read -p "Do you want to update the attendance thresholds? (y/n): " input
 if  [ "$input" = "y" ]; then
@@ -118,4 +123,3 @@ if  [ "$input" = "y" ]; then
     echo " config.json updated with new thresholds"
 fi
 echo " Deployment successfully "
-
