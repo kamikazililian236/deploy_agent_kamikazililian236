@@ -1,1 +1,4 @@
-# deploy_agent_kamikazililian236
+<a href="https://drive.google.com/file/d/1xYZ6GXbnAep1iVPKvVavZdAroan2DPkl/view" target="_blank"> <b> my video</b></a>
+
+The structure of the script , at the top is a trap function called zipping which handles interruptions. If the script gets cancelled mid-run it automatically archives whatever was created and deletes the incomplete folder to keep the workspace clean.
+The script then does a Python3 health check to confirm the environment is ready before doing anything else, its the first thing it checks before everything. After that it takes a project name from the user and builds the full folder structure automatically where it starts creating the main folder, Helpers and reports inside it, and generating all the required files with their content directly from the script. Finally it asks if you want to update the attendance thresholds. If yes, it uses sed command to edit the config.json file changing the warning and failure values without manually opening the file. The video also demonstrates the trap in action by pressing Ctrl+C mid-execution and showing the archive being created and the incomplete folder being removed. 
