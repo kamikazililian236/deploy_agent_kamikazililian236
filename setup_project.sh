@@ -11,6 +11,8 @@ echo " cleaning up ..."
 }
 trap zipping  SIGINT
 
+
+
 echo "Start deploying."
 echo "Confirming if it python 3 is installed."
 
@@ -29,15 +31,20 @@ else
     mkdir -p "$project_dir/Helpers"
     mkdir -p "$project_dir/reports"
 
-echo "Folders created."
-    cp attendance_checker.py "$project_dir/"
-    cp assets.csv            "$project_dir/Helpers/"
-    cp config.json           "$project_dir/Helpers/"
-    cp reports.log           "$project_dir/reports/"
-
-echo "Files moved"
-
 fi
+cat > attendance_tracker_$project_dir/Helpers/config.json << EOF
+
+{
+    "thresholds": {
+        "warning": 75,
+        "failure": 50
+    },
+    "run_mode": "live",
+    "total_sessions": 15
+}
+EOF
+
+
 
 read -p "Do you want to update the attendance thresholds? (y/n): " input
 if  [ "$input" = "y" ]; then
