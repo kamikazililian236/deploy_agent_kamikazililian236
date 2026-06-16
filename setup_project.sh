@@ -44,6 +44,14 @@ cat > attendance_tracker_$project_dir/Helpers/config.json << EOF
 }
 EOF
 
+cat > attendance_tracker_$project_dir/Helpers/assets.csv << EOF
+Email,Names,Attendance Count,Absence Count
+alice@example.com,Alice Johnson,14,1
+bob@example.com,Bob Smith,7,8
+charlie@example.com,Charlie Davis,4,11
+diana@example.com,Diana Prince,15,0
+
+EOF
 
 
 read -p "Do you want to update the attendance thresholds? (y/n): " input
