@@ -31,7 +31,6 @@ else
     mkdir -p "$project_dir/Helpers"
     mkdir -p "$project_dir/reports"
 
-fi
 cat > attendance_tracker_$project_dir/Helpers/config.json << EOF
 
 {
@@ -44,7 +43,7 @@ cat > attendance_tracker_$project_dir/Helpers/config.json << EOF
 }
 EOF
 
-cat > attendance_tracker_$project_dir/Helpers/assets.csv << EOF
+cat > attendance_tracker_$project_dir/Helpers/assets.csv << 'EOF'
 Email,Names,Attendance Count,Absence Count
 alice@example.com,Alice Johnson,14,1
 bob@example.com,Bob Smith,7,8
@@ -99,9 +98,14 @@ def run_attendance_check():
 if __name__ == "__main__":
 
     run_attendance_check()
+EOF
 
-	EOF
-	
+cat > attendance_tracker_$project_dir/Helpers/reportes.log << 'EOF'
+	--- Attendance Report Run: 2026-02-06 18:10:01.468726 ---
+[2026-02-06 18:10:01.469363] ALERT SENT TO bob@example.com: URGENT: Bob Smith, your attendance is 46.7%. You will fail this class.
+[2026-02-06 18:10:01.469424] ALERT SENT TO charlie@example.com: URGENT: Charlie Davis, your attendance is 26.7%. You will fail this class.
+
+EOF
 
 
 read -p "Do you want to update the attendance thresholds? (y/n): " input
